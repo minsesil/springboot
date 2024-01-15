@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.study.repository.BoardDao"> <!-- Dao이름넣기 -->
+  <select id="list" resultType="com.study.dto.Board"> <!-- Dao의 메소드이름 -->
+    select * 
+    from boardtest1 
+    order by no desc
+  </select>
+  
+  <!-- detail -->
+  <select id="detailBoard" resultType="com.study.dto.Board"> <!-- id:메소드이름 / 리절트타입:보드타입-->
+     select *
+     from boardtest1
+     where no = #{no}                 <!-- no에 해당하는것 하나만 가져옴 -->
+  </select>
+  
+  <!-- 토탈갯수 -->
+  <select id="totalRecord" resultType="_int">
+     select count(*)
+     from boardtest1     
+  </select>
+  
+  <!-- insert -->
+  <insert id="insertBoard" parameterType="com.study.dto.Board"><!-- 파라메타타입:보드타입 -->
+     insert into boardtest1
+       values(
+       boardtest1_seq.nextval,   <!-- 시퀀스이름 -->
+       #{title},
+       #{writer},
+       #{content})
+  </insert>
+  
+  <!-- delete -->
+  <delete id="deleteBoard">
+     delete from boardtest1
+        where no = #{no}
+  </delete>
+</mapper>
+
+<!-- backend끝남 -->
