@@ -29,13 +29,14 @@ import lombok.ToString;
  *  - @NonNull이 붙어있는 필드만 매개변수로한 생성자
  *  - @NonNull이 하나도 없을때는 매개변수가 없는 생성자
  */
-@Data   //가장많이쓰임
+
+@NoArgsConstructor // 기본생성자 반드시 넣어준다. 없으면 오류
+@Data   // 가장많이쓰임
 public class Board {
 	@NonNull  			//널값을 가질수 없다.널이면 exception 발생(not null인거 바로위에 붙임)
 	private int no;
 	private String title;
 	private String writer;
-	@NonNull
 	private String content;
 
 }
