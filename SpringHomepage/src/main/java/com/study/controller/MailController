@@ -1,0 +1,29 @@
+package com.study.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class MailController {
+	
+	private final MailService mailService;
+
+    @ResponseBody
+    @PostMapping("/mail")
+    public String MailSend(String mail){
+
+        int number = mailService.sendMail(mail);
+
+        String num = "" + number;
+
+        return num;
+    }
+
+}
+
+///mail 이라는 URL에 접속하게 되면 Post 방식으로 mail을 전송하도록 로직을 구성했다.
+//@ResponseBody 어노테이션을 붙여 Mail Request 에 대한 Response 메소드를 만들었다.
