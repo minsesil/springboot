@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>상세보기</title>
+<link href="/css/index.css" rel="stylesheet" />
+<link href="/css/boardList.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+</head>
+
+<body>
+<div th:replace = "~{/fragments/header.html :: fragment-menu}">"></div>
+
+<div class="outer">
+	
+	<form action="update" method="post">
+	    <br><br>
+		<table align="center" width="700">
+			<tr>
+				<th colspan="2" bgcolor="lightgreen" height="30">상세보기</th>
+			</tr>
+			<tr>
+				<td width="20%">제목</td>
+				<td><input name="title" th:value="${board.title}"></td>
+			</tr>
+			
+			<tr>
+				<td>내용</td>
+				<td><textarea name="content" rows="10" cols="50" th:text="${board.content}"></textarea></td>
+			</tr>
+			
+			</tr>
+				<td>작성자</td>
+				<td th:text="${board.writer}"></td>
+			</tr>
+
+			</tr>
+				<td>작성일</td>
+				<td th:text="*{#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
+			</tr>
+			
+			</tr>
+				<td colspan="2" align="right" th:text="|조회수:${board.count}|"></td>
+			</tr>
+									
+			<span th:if="${loginUser != null}">
+				<tr>
+					<td colspan="2" align="center">
+						<input type="submit" value="수정">&emsp;
+					</td>
+				</tr>
+			</span>
+		</table>
+		<input type="hidden" name="bno" th:value="${board.bno}">		
+	</form>
+	  
+	<hr><br>
+		<table align="center" style="width:100%;" border="1"  id="list-area">
+			<tr>
+				<th width="15%">댓글작성</th>
+				<th width="70%" height="30%"><textarea cols="70" rows="3" id="replyContent"></textarea></th>
+				<th width="15%"><button onclick="insertReply();">등록</button></th>
+			</tr>
+			<tr>
+				<td colspan="3"  style="text-align: right;" th:text="|댓글의 총 갯수 : ${replyList.size()}|">
+				<!--댓글의 총 갯수 : ${list.size()}  
+				-->
+				</td>
+			</tr>
+			<tr>
+				<th width="15%">작성자</th>
+				<th>내용</th>
+				<th width="25%">작성일</th>
+			</tr>
+		    <tr th:each="r:${replyList}">
+		      <td th:text="${r.rname}"></td>
+		      <td th:text="${r.rcontent}"></td>
+		      <td th:text="*{#temporals.format(r.redate, 'yyyy-MM-dd')}"></td>
+		    </tr>
+		    <input type="hidden" name="bno" th:value="${board.bno}">	
+		    					
+		</table>		
+</div>
+
+	
+	<script>
+    function insertReply() {
+        var formData = {
+            refBno: [[${board.bno}]],
+            rname: "[[${loginUser.id}]]",
+            rcontent: $("#replyContent").val()
+        };
+
+        $.ajax({
+            url: "rinsert",
+            data: formData,
+            type: "post",
+            traditional: true, // jQuery 1.4에서 배열 전송을 위해 설정 (현재는 생략 가능)
+            success: function(data) {
+                location.reload();
+            },
+            error: function() {
+                console.log("댓글 등록 실패");
+            }
+        });
+    }
+	</script>
+	
+
+
+
+</body>
+</html>
