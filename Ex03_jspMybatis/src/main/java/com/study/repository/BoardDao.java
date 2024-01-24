@@ -11,9 +11,13 @@ import com.study.dto.Board;
 public interface BoardDao {
 
 	public List<Board> list();  //메소드이름:list
+	
 	public Board detailBoard(String no);  
+	
 	public int totalRecord();  //토탈갯수
+	
 	public int insertBoard(Board board);
+	
 	public int deleteBoard(String no);
 
 }
