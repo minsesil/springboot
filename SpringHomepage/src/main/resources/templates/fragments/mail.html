@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:fragment="fragment-menu">
+		<h1 align="center">메일인증으로가기</h1>
+		<br>
+		<div th:if="${loginUser == null}"  class="login-area" align="right">
+			<form action="login" method="post">
+				<table>
+					<tr>
+						<td>이메일주소</td>
+						<td><input name="email" required></td>
+						<td rowspan="2"><button style="height: 50px;">이메일전송</button></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<!-- 로그인 후 -->
+
+	
+		<br>
+		
+
+	</div>
+</html>

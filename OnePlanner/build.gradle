@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.20' // Lombok 추가
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -48,8 +49,16 @@ dependencies {
     
     
     //이메일인증
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc' //DB 접근을 위한 JDBC template사용
+	//implementation group: 'org.springframework.boot', name:'spring-boot-starter-mail', version: '2.6.3' //이메일인증코드
+	implementation 'org.springframework.boot:spring-boot-starter-mail' //이메일인증코드
+	
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' //이메일인증 폼을 위한 타임리프
+	implementation 'org.springframework:spring-context-support:5.3.10' // 현재 Spring Boot 버전에 맞는 버전을 사용하시기 바랍니다.(이게맞음)
+	implementation 'com.sun.mail:javax.mail:1.6.2' // 현재 사용 가능한 최신 버전으로 업데이트
+	
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
