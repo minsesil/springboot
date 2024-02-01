@@ -23,7 +23,6 @@ import com.study.service.EmailService;
 public class EmailVerificationController {
 	
 	// 인증 코드를 저장하는 Map
-    //private static Map<String, String> verificationCodes = new HashMap<>();	
     private Map<String, String> getVerificationCodesFromSession(Model model) {
         Map<String, String> verificationCodes = (Map<String, String>) model.getAttribute("verificationCodes");
         if (verificationCodes == null) {
@@ -61,7 +60,6 @@ public class EmailVerificationController {
         
         // 인증코드를 입력할 수 있는 페이지로 이동
         model.addAttribute("email", email);  // 모델에 이메일 정보 추가
-        //return "verification/verification-code-form"; 
         return "verification/verification-email-form";  
     }
     
@@ -114,10 +112,6 @@ public class EmailVerificationController {
 	}
 
 	
-//	private String getGeneratedCode(String email) {
-//		// 해당 이메일에 대한 인증 코드를 가져움
-//		return verificationCodes.getOrDefault(email, "");
-//	}
 	private String getGeneratedCode(String email, Model model) {
 	    // 해당 이메일에 대한 인증 코드를 가져옴
 	    Map<String, String> verificationCodes = getVerificationCodesFromSession(model);
