@@ -1,5 +1,5 @@
 /*
- * 사용자 관련 기능을 처리하는 RESTful API를 제공하는 UserController 클래스 (by min)
+ * 사용자 관련 기능을 처리하는 RESTful API를 제공하는 UserController 클래스
  */
 package com.study.controller;
 
@@ -18,8 +18,9 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping("/send-verification-email")
-    public String sendVerificationEmail(@RequestParam String email) {
+    @PostMapping("/verification-email")
+     public String sendVerificationEmail(@RequestParam String email) {
+    	
         // 사용자 이메일로 랜덤인증코드 생성
         String verificationCode = generateRandomCode();
         

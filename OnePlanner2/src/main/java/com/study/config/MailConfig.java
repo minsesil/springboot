@@ -21,8 +21,8 @@ public class MailConfig {
         javaMailSender.setDefaultEncoding("UTF-8"); 				 // 메일함 한글깨짐 방지
         
         javaMailSender.setHost("smtp.gmail.com");  					 // SMTP 서버명
-        javaMailSender.setUsername("m91302368@gmail.com");   	 	 // 네이버 아이디
-        javaMailSender.setPassword("taqp qmso pmuf jbdk");  		 // 네이버 비밀번호
+        javaMailSender.setUsername("m91302368@gmail.com");   	 	 // google 아이디 ${email}
+        javaMailSender.setPassword("taqp qmso pmuf jbdk");  		 // google 비밀번호 ${email}
         javaMailSender.setPort(465);								 // SMTP 포트
 
         javaMailSender.setJavaMailProperties(getMailProperties());   // 메일 인증서버 가져오기

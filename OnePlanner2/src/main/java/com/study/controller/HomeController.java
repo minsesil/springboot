@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 	
 	@GetMapping("/")
+	//@GetMapping("verification/")
 	public String home() {
-		return "index";
+		return "index_veri";
+		//return "index";
+		//return "redirect:/verification/index";
 	}
 
 }

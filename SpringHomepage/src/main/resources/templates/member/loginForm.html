@@ -1,8 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-	<div th:fragment="fragment-menu">
-		<h1 align="center">One Planner</h1>
-		<br>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입폼</title>
+<script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+<link href="/css/index.css" rel="stylesheet" />
+
+</head>
+<body>
+
+	<div th:replace = "~{/fragments/header.html :: fragment-menu}">"></div>
+	<h1 align="center">로그인</h1>
+
 		<div th:if="${loginUser == null}"  class="login-area" align="right">
 			<form action="login" method="post">
 				<table>
@@ -39,16 +48,7 @@
 				</tr>
 			</table>
 		</div>
-	
-		<br>
-		
-		<table class="nav-area" align="center">
-			<tr>
-				<td onclick="location.href='index'">HOME</td>
-				<td>공지사항</td>
-				<td onclick="location.href='list'">게시판</td>
-				<td>ETC</td>
-			</tr> 
-		</table>
-	</div>
+
+  
+</body>
 </html>

@@ -1,5 +1,5 @@
 /*
- * 이메일 전송과 관련된 기능을 제공하는 서비스 클래스 (by min)
+ * 이메일 전송과 관련된 기능을 제공하는 서비스 클래스
  */
 package com.study.service;
 
@@ -36,7 +36,7 @@ public class EmailService {
             Context context = new Context();
             context.setVariable("verificationCode", verificationCode);
 
-            String htmlContent = templateEngine.process("verification-email", context);
+            String htmlContent = templateEngine.process("verification/verification-email", context);  //verification/verification-email.html
             helper.setText(htmlContent, true);   // true 전달하여 HTML 형식으로 설정
 
             emailSender.send(message);
