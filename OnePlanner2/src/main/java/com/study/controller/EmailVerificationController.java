@@ -22,7 +22,7 @@ import com.study.service.EmailService;
 //@Scope("singleton")
 public class EmailVerificationController {
 	
-	// 인증 코드를 저장하는 Map
+	// 인증코드 저장하는 Map
     private Map<String, String> getVerificationCodesFromSession(Model model) {
         Map<String, String> verificationCodes = (Map<String, String>) model.getAttribute("verificationCodes");
         if (verificationCodes == null) {
@@ -50,7 +50,7 @@ public class EmailVerificationController {
         // 세션에서 verificationCodes를 가져오거나 생성
         Map<String, String> verificationCodes = getVerificationCodesFromSession(model);
 
-        // 이메일과 인증 코드를 Map에 저장
+        // 이메일과 인증코드 Map에 저장
         verificationCodes.put(email, verificationCode);
         
         // 로그메시지
@@ -58,8 +58,8 @@ public class EmailVerificationController {
         System.out.println("인증코드: " + verificationCode);
         System.out.println("verificationCodes 맵에 저장된 값: " + verificationCodes);
         
-        // 인증코드를 입력할 수 있는 페이지로 이동
-        model.addAttribute("email", email);  // 모델에 이메일 정보 추가
+        // 인증코드를 입력할수 있는 페이지로 이동
+        model.addAttribute("email", email);  // 모델에 이메일정보 추가
         return "verification/verification-email-form";  
     }
     
@@ -74,20 +74,20 @@ public class EmailVerificationController {
     	// 생성한 인증 코드 가져오기
         String generatedCode = getGeneratedCode(email, model);
     	
-        // 인증 코드를 확인하고 처리하는 로직
+        // 인증코드를 확인하고 처리하는 로직
         if (isValidCode(email, verificationCode, model)) {
-            // 인증 코드가 유효한 경우
+            // 인증코드가 유효한 경우
             model.addAttribute("email", email);
             model.addAttribute("alertMessage", "인증이 성공적으로 완료되었습니다!");
      
-            // 사용한 인증코드를 삭제
+            // 사용한 인증코드 삭제
             removeVerificationCode(email, model);
             
             System.out.println("성공일때 리다이렉트 경로: /verification-email-form");
             return "redirect:/verification-email-form";  // 이메일입력폼으로 이동
         
         } else {
-            // 인증 코드가 유효하지 않은 경우
+            // 인증코드가 유효하지 않은 경우
             model.addAttribute("email", email);
             model.addAttribute("error", "인증 코드가 올바르지 않습니다. 다시 시도해주세요.");
             System.out.println("성공아닐때 리다이렉트 경로: /verification-code-form");
@@ -99,12 +99,12 @@ public class EmailVerificationController {
 
     private void removeVerificationCode(String email, Model model) {
         Map<String, String> verificationCodes = getVerificationCodesFromSession(model);
-       // 사용한 인증코드를 삭제
+       // 사용한 인증코드 삭제
         verificationCodes.remove(email);
     }
 	
 	private boolean isValidCode(String email, String verificationCode, Model model) {
-		// 해당 이메일에 대한 인증 코드를 가져움
+		// 해당 이메일에 대한 인증코드 가져움
 	    String generatedCode = getGeneratedCode(email, model); // 받은 실제 이메일을 전달
 		    System.out.println("사용자 입력 코드: " + verificationCode);
 		    System.out.println("저장된 코드: " + generatedCode);
@@ -113,7 +113,7 @@ public class EmailVerificationController {
 
 	
 	private String getGeneratedCode(String email, Model model) {
-	    // 해당 이메일에 대한 인증 코드를 가져옴
+	    // 해당 이메일에 대한 인증코드 가져옴
 	    Map<String, String> verificationCodes = getVerificationCodesFromSession(model);
 	    return verificationCodes.getOrDefault(email, "");
 	}
