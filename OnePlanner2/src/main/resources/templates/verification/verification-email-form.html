@@ -18,40 +18,26 @@
 
 <body>
     <h1>이메일전송 인증폼/veri</h1>
-<!--
-    <form action="/verify-email" method="post">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <button type="submit">인증</button>
-    </form>
-    
-    <form action="/verification-email-sent" method="post">
-        <input type="hidden" name="email" th:value="${email}" readonly>
-        <label for="verificationCode">인증 코드:</label>
-        <input type="text" id="verificationCode" name="verificationCode" required>
-        <button type="submit">확인</button>
-    </form>    
-  -->
-    <!--이메일코드폼 -->
+
+    <!--이메일 입력 -->
      <form id="verifiEmailForm" action="/verify-email" method="post" onsubmit="sendVerificationCode(event)">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
         <button type="submit">인증</button>
     </form>
     
-    <!--인증코드폼 -->
+    <!--인증코드 입력-->
     <div id="verificationCodeContainer" class="verification-code-container">
         <form id="verificationCodeForm" action="/verification-email-sent" method="post">
             <!--<input type="hidden" name="email" th:value="${email}" readonly>  -->
             <input type="hidden" name="email" id="verificationEmail" readonly>
             <label for="verificationCode">인증 코드:</label>
             <input type="text" id="verificationCode" name="verificationCode" required>
-            <!-- <button type="submit">확인</button>-->
             <button type="submit" onclick="checkVerificationCode(event)">확인</button>
         </form>
     </div>
     
-    <!-- test3로 이동 -->
+    <!--다음 텍스트로 이동 -->
     <a name="test3"></a>
     test3 : <input type="text" id="test3" name="test3">
     
@@ -71,56 +57,54 @@
                 // 서버로의 요청이 성공하면 이 부분이 실행
                 console.log('서버 응답:', response);
 
-                // 인증 코드 폼 보이도록 설정
+                // 인증코드 폼 보이도록 설정
                 $('#verificationCodeContainer').show();
                 
-             	// 두 번째 폼의 이메일 입력란에 이메일 값을 할당
+             	// 두번째 폼의 이메일 입력란에 이메일 값을 할당
                 $('#verificationEmail').val(email);
                
             },
             error: function(error) {
-                console.error('서버 오류:', error);
+                console.error('서버오류:', error);
             }
         });
     }
 
-    // 추가된 코드: 인증 코드 확인 버튼 클릭 시 호출되는 함수
+    // 인증코드 확인버튼 클릭시 호출되는 함수
     function checkVerificationCode(event) {
     	
         event.preventDefault();
         const email = document.getElementById('email').value;
         const verificationCode = document.getElementById('verificationCode').value;
 
-        // 여기에서 AJAX 요청을 사용하여 서버로 인증 코드 확인을 요청
-        // 요청이 성공하면 아래의 코드를 실행
-
-        // alert('인증 성공! 다음 작업을 수행하세요!')
+        // 서버로 인증코드 확인을 요청 성공하면 아래실행
+        // alert('인증성공! 다음 작업을 수행하세요!')
         console.log('이메일로 인증번호를 전송했습니다!<br>인증코드를 입력하세요!');
         
         // 여기에서 실제 서버로의 AJAX 호출을 추가
         $.ajax({
-            url: '/verification-email-sent',  // 실제 서버 엔드포인트에 맞게 수정
+            url: '/verification-email-sent',  
             method: 'POST',
             data: { email: email, verificationCode: verificationCode },
             success: function(response) {
-                // 서버로의 요청이 성공하면 이 부분이 실행됩니다.
+                // 서버로의 요청이 성공
                 console.log('서버 응답:', response);
 
-                // 인증성공 
-                //alert('이메일로 인증번호를 전송했습니다!<br>인증코드를 입력하세요!');
-                //다음 text박스로 이동
+                // 인증성공 후 다음 text박스로 이동
                 window.location.href = '#test3';
                 
-                // 인증창 숨기기
+                // 인증성공 후 인증번호 입력창 숨기기
                 $('#verificationCodeContainer').hide();
-                
-            },
+           },
             error: function(error) {
-                console.error('서버 오류:', error);
+                console.error('서버오류:', error);
 
-                // 인증 실패 시 추가 작업을 수행하도록 원하는 코드를 여기에 추가
-                // 예: 에러 메시지 표시, 필요한 조치 등
-                alert('인증 실패. 다시 시도해주세요.');
+                // 인증실패
+               alert('인증실패. 다시시도해주세요.');
+                
+               // 인증실패 시 인증번호 입력 폼으로 이동
+               window.location.href = '#verificationCodeContainer';
+
             }
         });
     }
