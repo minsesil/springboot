@@ -46,7 +46,8 @@
             <input type="hidden" name="email" id="verificationEmail" readonly>
             <label for="verificationCode">인증 코드:</label>
             <input type="text" id="verificationCode" name="verificationCode" required>
-            <button type="submit">확인</button>
+            <!-- <button type="submit">확인</button>-->
+            <button type="submit" onclick="checkVerificationCode(event)">확인</button>
         </form>
     </div>
     
@@ -75,10 +76,7 @@
                 
              	// 두 번째 폼의 이메일 입력란에 이메일 값을 할당
                 $('#verificationEmail').val(email);
-                
-             	// 추가된 코드: checkVerificationCode 함수 호출
-                //checkVerificationCode(event);
-                
+               
             },
             error: function(error) {
                 console.error('서버 오류:', error);
@@ -108,11 +106,14 @@
                 // 서버로의 요청이 성공하면 이 부분이 실행됩니다.
                 console.log('서버 응답:', response);
 
-                // 인증 성공 시 추가 작업을 수행하도록 원하는 코드를 여기에 추가
-                // 예: 경고창 표시, 페이지 리로드 등
+                // 인증성공 
                 //alert('이메일로 인증번호를 전송했습니다!<br>인증코드를 입력하세요!');
                 //다음 text박스로 이동
                 window.location.href = '#test3';
+                
+                // 인증창 숨기기
+                $('#verificationCodeContainer').hide();
+                
             },
             error: function(error) {
                 console.error('서버 오류:', error);
