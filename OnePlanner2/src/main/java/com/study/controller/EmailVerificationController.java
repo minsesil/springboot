@@ -19,10 +19,20 @@ import com.study.service.EmailService;
 
 @Controller
 @SessionAttributes("verificationCodes")
+//@Scope("singleton")
 public class EmailVerificationController {
 	
 	// 인증 코드를 저장하는 Map
-    private Map<String, String> verificationCodes = new HashMap<>();
+    //private static Map<String, String> verificationCodes = new HashMap<>();	
+    private Map<String, String> getVerificationCodesFromSession(Model model) {
+        Map<String, String> verificationCodes = (Map<String, String>) model.getAttribute("verificationCodes");
+        if (verificationCodes == null) {
+            verificationCodes = new HashMap<>();
+            model.addAttribute("verificationCodes", verificationCodes);
+        }
+        return verificationCodes;
+    }
+		
 	
     @Autowired
     private EmailService emailService;
@@ -33,26 +43,30 @@ public class EmailVerificationController {
     }
 
     @PostMapping("/verify-email")   //verification-email-form.html
-    public String verifyEmail(@RequestParam("email") String email, Model model) {
-    	
+    public String verifyEmail(@RequestParam("email") String email, Model model) {   	
          // 이메일을 확인하고 인증코드 전송
         String verificationCode = generateRandomCode();
         emailService.sendVerificationEmail(email, verificationCode);
+        
+        // 세션에서 verificationCodes를 가져오거나 생성
+        Map<String, String> verificationCodes = getVerificationCodesFromSession(model);
 
         // 이메일과 인증 코드를 Map에 저장
         verificationCodes.put(email, verificationCode);
         
-        // 로그메시지 추가
+        // 로그메시지
         System.out.println("해당 이메일로 전송완료: " + email);
         System.out.println("인증코드: " + verificationCode);
+        System.out.println("verificationCodes 맵에 저장된 값: " + verificationCodes);
         
-        // 인증코드를 입력할 수 있는 페이지로 이동(24.1.31)
+        // 인증코드를 입력할 수 있는 페이지로 이동
         model.addAttribute("email", email);  // 모델에 이메일 정보 추가
-        return "verification/verification-code-form";        
+        //return "verification/verification-code-form"; 
+        return "verification/verification-email-form";  
     }
     
     
-    //인증완료 페이지로 (24.01.31)
+    //인증완료 페이지로
     @PostMapping("/verification-email-sent")
     public String verifyEmailCode(@RequestParam("email") String email,
                                   @RequestParam("verificationCode") String verificationCode,
@@ -60,16 +74,16 @@ public class EmailVerificationController {
     	System.out.println("verifyEmailCode 메서드 호출");
     	
     	// 생성한 인증 코드 가져오기
-        String generatedCode = getGeneratedCode(email);
+        String generatedCode = getGeneratedCode(email, model);
     	
         // 인증 코드를 확인하고 처리하는 로직
-        if (isValidCode(email, verificationCode)) {
+        if (isValidCode(email, verificationCode, model)) {
             // 인증 코드가 유효한 경우
             model.addAttribute("email", email);
             model.addAttribute("alertMessage", "인증이 성공적으로 완료되었습니다!");
      
             // 사용한 인증코드를 삭제
-            removeVerificationCode(email);
+            removeVerificationCode(email, model);
             
             System.out.println("성공일때 리다이렉트 경로: /verification-email-form");
             return "redirect:/verification-email-form";  // 이메일입력폼으로 이동
@@ -85,24 +99,29 @@ public class EmailVerificationController {
 
     
 
-	private void removeVerificationCode(String email) {
-		// 사용한 인증코드를 삭제
-	    verificationCodes.remove(email);
-	}
-
+    private void removeVerificationCode(String email, Model model) {
+        Map<String, String> verificationCodes = getVerificationCodesFromSession(model);
+       // 사용한 인증코드를 삭제
+        verificationCodes.remove(email);
+    }
 	
-	private boolean isValidCode(String email, String verificationCode) {
+	private boolean isValidCode(String email, String verificationCode, Model model) {
 		// 해당 이메일에 대한 인증 코드를 가져움
-	    String generatedCode = getGeneratedCode(email); // 받은 실제 이메일을 전달
+	    String generatedCode = getGeneratedCode(email, model); // 받은 실제 이메일을 전달
 		    System.out.println("사용자 입력 코드: " + verificationCode);
 		    System.out.println("저장된 코드: " + generatedCode);
 	    return generatedCode != null && verificationCode.equals(generatedCode);
 	}
 
 	
-	private String getGeneratedCode(String email) {
-		// 해당 이메일에 대한 인증 코드를 가져움
-		return verificationCodes.getOrDefault(email, "");
+//	private String getGeneratedCode(String email) {
+//		// 해당 이메일에 대한 인증 코드를 가져움
+//		return verificationCodes.getOrDefault(email, "");
+//	}
+	private String getGeneratedCode(String email, Model model) {
+	    // 해당 이메일에 대한 인증 코드를 가져옴
+	    Map<String, String> verificationCodes = getVerificationCodesFromSession(model);
+	    return verificationCodes.getOrDefault(email, "");
 	}
 	
 	
