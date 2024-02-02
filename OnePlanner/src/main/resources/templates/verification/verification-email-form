@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:charset="UTF-8">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이메일전송 인증폼</title>
+    <style>
+        /* 스크립트 창 스타일링 */
+        #verificationPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        /* 닫기 버튼 스타일링 */
+        #closeButton {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>이메일전송 인증폼/veri</h1>
+
+    <form id="emailForm" action="/verify-email" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="button" onclick="showVerificationPopup()">인증</button>
+    </form>
+    
+    <!-- 인증 코드 입력 폼 -->
+    <form id="verificationCodeForm" style="display: none;" onsubmit="return submitVerificationCode()">
+        <label for="verificationCode">인증 코드:</label>
+        <input type="text" id="verificationCode" name="verificationCode" required>
+        <button type="submit">확인</button>
+    </form>
+
+    <!-- 스크립트 창 -->
+<div id="verificationPopup">
+    <p>이메일인증<br>이메일로 전송된 인증번호를 입력해주세요.</p>
+    <form id="verificationForm" action="/verification-email-sent" method="post">
+        <input type="text" id="verificationCode" name="verificationCode" required>
+        <button id="closeButton" onclick="closeVerificationPopup()">닫기</button>
+        <button type="button" onclick="submitEmailForm()">확인</button>
+    </form>
+</div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function showVerificationPopup() {
+            document.getElementById('verificationPopup').style.display = 'block';
+        }
+
+        function closeVerificationPopup() {
+            document.getElementById('verificationPopup').style.display = 'none';
+        }
+
+        function submitVerificationCode() {
+            var email = document.getElementById('email').value;
+            var verificationCode = document.getElementById('verificationCode').value;
+
+            console.log('Email:', email);
+            console.log('Verification Code:', verificationCode);
+
+            // 이메일과 코드를 서버로 전송하거나 처리하는 로직 추가
+
+            // 폼을 숨기거나 리디렉션 등 추가 로직
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('verificationCodeForm').style.display = 'none';
+            return false; // 폼의 기본 동작 방지
+        }
+        /*]]>*/
+    </script>
+
+</body>
+
+</html>

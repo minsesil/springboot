@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:charset="UTF-8">
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>이메일전송 인증코드 입력폼</title>
+</head>
+
+<body>
+    <h1>이메일전송 인증코드 입력폼/입력 실패시 열리는창</h1>
+    <form action="/verification-email-sent" method="post">
+        <input type="hidden" name="email" th:value="${email}" readonly>
+        <label for="verificationCode">인증 코드:</label>
+        <input type="text" id="verificationCode" name="verificationCode" required>
+        <button type="submit">확인</button>
+    </form>
+</body>
+</html>
